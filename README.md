@@ -1,21 +1,6 @@
-# e-test
+# Windows 10 FoucsWallpaper
 
-> An electron-vue project
-
-#### Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
-```
+> Windows 10 聚焦壁纸提取工具。
 
 ---
 
