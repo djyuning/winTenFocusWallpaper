@@ -1,0 +1,32 @@
+// 前缀
+.prefix(@key, @value) {
+  -webkit-@{key}: @value;
+     -moz-@{key}: @value;
+          @{key}: @value;
+}
+
+// 圆角
+.radius(@radius) {
+  .prefix(border-radius, @radius);
+}
+
+// 阴影
+.shadow(@shadow) {
+  .prefix(box-shadow, @arguments);
+}
+
+// 变换
+.transform(@transform) {
+  .prefix(transform, @arguments);
+}
+
+// 过渡
+.transition(@transition) {
+  .prefix(transition, @arguments);
+}
+
+// 动画
+.animation(@animation) {
+  .prefix(animation, @arguments);
+}
+
