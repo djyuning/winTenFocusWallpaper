@@ -1,38 +1,49 @@
 <template>
     <div id="wrapper">
-        <main>
 
-            <el-form label-width="80px">
+        <el-form label-width="80px">
 
-                <el-form-item label="源路径">
-                    <el-input v-model="srcPath" @click="getPath('srcPath')"></el-input>
-                    <p>C:\Users\CL-20171221-002\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets</p>
-                </el-form-item>
+            <el-form-item label="源路径">
+                <el-input v-model="srcPath" @click="getPath('srcPath')"></el-input>
+                <el-button type="primary" icon="el-icon-more" @click="getPath('srcPath')"></el-button>
+                <p>
+                    C:\Users\CL-20171221-002\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets</p>
+                <p>
+                    C:\Users\XuYuningPC\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets</p>
+            </el-form-item>
 
-                <el-form-item label="存放地址">
-                    <el-input v-model="distPath"></el-input>
-                </el-form-item>
+            <el-form-item label="存放地址">
+                <el-input v-model="distPath"></el-input>
+            </el-form-item>
 
-                <el-form-item>
-                    <el-button type="primary" @click="getImages">读取资源</el-button>
-                    <el-button @click="reset">清空</el-button>
-                </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="getImages">读取资源</el-button>
+                <el-button @click="reset">清空</el-button>
+            </el-form-item>
 
-            </el-form>
+        </el-form>
 
-            <ul class="results" v-if="srcFiles">
-                <li v-for="(file, key) in imageFiles" :key="key">
-                    <img :src="'file:///'+ file.fullPath.replace(/\\/g,'/')" alt="" style="width: 200px;"/>
-                    <span>{{file.type}}-{{file.size}}</span>
-                    <button @click="saveImage(file)">保存</button>
-                </li>
-            </ul>
+        <ul class="results" v-if="srcFiles">
+            <li v-for="(file, key) in imageFiles" :key="key">
+                <img :src="'file:///'+ file.fullPath.replace(/\\/g,'/')" alt="" style="width: 200px;"/>
+                <span>{{file.type}}-{{file.size}}</span>
+                <button @click="saveImage(file)">保存</button>
+            </li>
+        </ul>
 
-        </main>
+        <el-dropdown>
+            <el-button type="primary" icon="el-icon-more"></el-button>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>设置</el-dropdown-item>
+                <el-dropdown-item>关闭</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+
     </div>
 </template>
 
 <script>
+
     import SystemInformation from './LandingPage/SystemInformation'
 
     import fs from 'fs'
@@ -48,7 +59,7 @@
 
         data() {
             return {
-                srcPath: 'C:\\Users\\CL-20171221-002\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets',
+                srcPath: 'C:\\Users\\XuYuningPC\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets',
                 srcFiles: null,
                 distPath: 'G:\\test\\temp',
             };
@@ -75,7 +86,7 @@
                     fileUse.fullPath = srcPathFile;
                     fileUse.savePath = this.distPath + '/' + file + '.' + size.type;
 
-                    if (stat.size >= 2000) {
+                    if (stat.size >= 1) {
                         files.push(fileUse);
                     }
 
@@ -88,7 +99,7 @@
 
         methods: {
 
-            reset(){
+            reset() {
                 this.srcFiles = null;
             },
 
@@ -109,7 +120,8 @@
             getImages() {
 
                 fse.readdir(this.srcPath, (err, files) => {
-                    if (err) {
+                    if (err || !files || files.length <= 0) {
+                        this.$alert('该目录下没有任何资源', '提示');
                         return;
                     }
                     this.srcFiles = files;
