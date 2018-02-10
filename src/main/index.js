@@ -18,9 +18,11 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 640,
+		//frame: false,
     useContentSize: true,
-    width: 1000,
+		//transparent: true,
+    width: 960,
     webPreferences:{webSecurity: false}//加上这个就可以获取到了本地的图片
   })
 

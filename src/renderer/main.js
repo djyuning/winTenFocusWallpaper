@@ -15,8 +15,8 @@ Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
 new Vue({
-    components: {App},
-    router,
-    store,
-    template: '<App/>'
+  components: {App},
+  router,
+  store,
+  template: '<App/>'
 }).$mount('#app');
