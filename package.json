@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "better-scroll": "^1.8.1",
     "element-ui": "^2.1.0",
     "fs-extra": "^5.0.0",
     "image-size": "^0.6.2",

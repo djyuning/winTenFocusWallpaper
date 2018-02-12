@@ -1,7 +1,10 @@
 <template>
-	<div id="app">
+	<div id="app" :class="{dark: darkMode}">
 		<div class="header">
 			<h1 class="title">Window 10 <span>FocusWallpaper</span></h1>
+
+			<el-button class="theme-dark-toggle" size="mini" @click="darkMode = !darkMode">{{darkMode? '亮色': '暗色'}}</el-button>
+
 		</div>
 		<div class="body">
 			<div class="sidebar">
@@ -11,16 +14,22 @@
 						<button><i class="el-icon-sort"></i></button>
 					</li>
 					<li>
-						<button><i class="el-icon-star-off"></i></button>
+						<el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="right-center">
+							<button>
+								<i class="el-icon-star-off"></i>
+							</button>
+						</el-tooltip>
 					</li>
 					<li>
-						<button><i class="el-icon-setting"></i></button>
+						<button @click="settingVisible = true"><i class="el-icon-setting"></i></button>
 					</li>
 				</ul>
 
 			</div>
-			<div class="content">
-				<router-view></router-view>
+			<div class="wrapper" ref="wrapper">
+				<div class="content">
+					<router-view></router-view>
+				</div>
 			</div>
 		</div>
 		<div class="footer">
@@ -28,6 +37,24 @@
 			<span class="version">版本 0.0.1 Beta</span>
 
 		</div>
+
+		<el-dialog title="设置" :visible.sync="settingVisible">
+			<div class="app-setting-wrap">
+				<el-form ref="form" label-width="128px">
+
+					<el-form-item label="记住选择">
+						<el-switch></el-switch>
+					</el-form-item>
+
+					<el-form-item>
+						<el-button size="mini" type="primary">保存</el-button>
+						<el-button size="mini">恢复默认</el-button>
+					</el-form-item>
+
+				</el-form>
+			</div>
+		</el-dialog>
+
 		<!--
 		<div class="menus">
 			<button @click="exitApp">关闭</button>
@@ -37,9 +64,29 @@
 </template>
 
 <script>
+
+	import BScroll from 'better-scroll'
+	import main from '../lib/main'
+
 	export default {
 
 		name: 'WinTenFocus',
+
+		data() {
+			return {
+				scroll: null,
+				settingVisible: false,
+				darkMode: false,
+			};
+		},
+
+		watch: {
+
+			darkMode: function (set) {
+				main.toggleThemeMode(set);
+			}
+
+		},
 
 		methods: {
 
@@ -47,6 +94,25 @@
 				this.$electron.remote.process.exit();
 			},
 
+		},
+
+		mounted() {
+
+			// 主题
+			this.darkMode = main.isDarkMode();
+
+			this.$nextTick(() => {
+
+				// 滚动条
+				this.scroll = new BScroll(this.$refs.wrapper, {
+					mouseWheel: true,
+					scrollbar: {
+						fade: false,
+						interactive: true,
+					},
+				});
+
+			});
 		}
 
 	}
@@ -79,6 +145,10 @@
 		-webkit-user-select: none;
 	}
 
+	.padding {
+		padding: @void;
+	}
+
 	#app {
 		background-color: white;
 		color: #666;
@@ -88,6 +158,14 @@
 
 		.el-form-item__label {
 			color: inherit;
+		}
+
+		// 主题切换按钮
+		.theme-dark-toggle {
+			position: absolute;
+			right: @voidLarge;
+			top: 50%;
+			margin-top: -14px;
 		}
 
 		// 头部
@@ -162,15 +240,16 @@
 
 		}
 
-		.content {
+		.wrapper {
 			background-color: #fafafa;
 			bottom: 0;
 			left: 64px;
 			right: 0;
 			top: 0;
-			overflow: auto;
+			overflow: hidden;
 			position: absolute;
 			z-index: 1;
+
 		}
 
 		.footer {
@@ -204,6 +283,24 @@
 
 			button {
 				cursor: pointer;
+			}
+
+		}
+
+		// 暗色主题
+		&.dark {
+			background-color: #222;
+
+			.header, .sidebar, .footer {
+				border-color: #444;
+			}
+
+			.header {
+				background-color: #111;
+			}
+
+			.wrapper {
+				background-color: #333;
 			}
 
 		}
