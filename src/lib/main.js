@@ -6,6 +6,7 @@ import storge from 'storge-js'
 
 const PATH_SRC = 'path_src';
 const PATH_DIST = 'path_dist';
+const THEME_DARK_MODE = 'theme_dark_mode';
 
 export default {
 
@@ -27,15 +28,28 @@ export default {
 
 	/**
 	 * 设置源地址
-	 * @param {String} srcPath
+	 * @param {String} path
 	 */
-	setSrcPath: function (srcPath) {
-		if (!srcPath || srcPath === '') return;
-		return storge.set(PATH_SRC, srcPath);
+	setSrcPath: function (path) {
+		if (!path || path === '') return;
+		return storge.set(PATH_SRC, path);
 	},
 
-	callUse: function () {
+	/**
+	 * 获取存放地址
+	 * @return {String|null}
+	 */
+	getDistPath: function () {
+		return storge.get(PATH_DIST);
+	},
 
+	/**
+	 * 设置存放地址
+	 * @param {String} path
+	 */
+	setDistPath: function (path) {
+		if (!path || path === '') return;
+		return storge.set(PATH_DIST, path);
 	},
 
 	/**
@@ -99,6 +113,23 @@ export default {
 		image.srcPath = imagePath;
 
 		return image;
+	},
+
+	/**
+	 * 主题设置
+	 * @param darkMode
+	 * @return {*}
+	 */
+	toggleThemeMode: function (darkMode) {
+		return storge.set(THEME_DARK_MODE, darkMode);
+	},
+
+	/**
+	 * 是否为暗色模式主题
+	 * @return {Boolean}
+	 */
+	isDarkMode: function () {
+		return storge.get(THEME_DARK_MODE, false);
 	}
 
 };

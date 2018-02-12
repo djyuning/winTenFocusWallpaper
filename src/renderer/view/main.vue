@@ -19,31 +19,29 @@
 
 			<div class="row">
 				<el-button @click="getImages">获取全部</el-button>
-				<el-button>电脑</el-button>
-				<el-button>手机</el-button>
-				<el-button>图标</el-button>
-				<el-button @click="srcFiles = null">清空</el-button>
+				<el-button @click="getImages('pc')">电脑</el-button>
+				<el-button @click="getImages('mobile')">手机</el-button>
+				<el-button type="danger" @click="reset">清空</el-button>
 			</div>
+
+			<p class="tips">Windows 10 的聚焦壁纸一般存放在用户目录 \Packages\Microsoft.Windows.ContentDeliveryManager_***\LocalState\Assets 目录下，其中 * 部分的文本为随机字符串。</p>
 
 		</div>
 
-		<div class="gallery">
-			<ul class="results" v-if="srcFiles">
+		<h4 class="empty" v-if="filesEmpty">暂无资源</h4>
+
+		<div class="gallery" v-if="srcFiles">
+			<ul class="results">
 				<li v-for="(file, key) in imageFiles" :key="key">
 					<img :src="'file:///'+ file.srcPath.replace(/\\/g,'/')" alt="" style="width: 200px;"/>
 					<div class="name">
 						<span>{{file.type}}-{{file.size}}</span>
 					</div>
-					<el-button class="save" type="primary" size="small" @click="saveImage(file)">保存</el-button>
+					<el-checkbox class="checker-handler"></el-checkbox>
+					<el-button class="save" icon="el-icon-download" size="mini" @click="saveImage(file)" title="保存"></el-button>
 				</li>
 			</ul>
 		</div>
-
-		<el-alert
-			title="如何找到壁纸存放路径？"
-			:closable="false"
-			description="Windows 10 的聚焦壁纸一般存放在用户目录 \Packages\Microsoft.Windows.ContentDeliveryManager_***\LocalState\Assets 目录下，其中 * 部分的文本为随机字符串。">
-		</el-alert>
 
 	</div>
 </template>
@@ -59,9 +57,10 @@
 
 		data() {
 			return {
-				srcPath: 'C:\\Users\\XuYuningPC\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets',
+				srcPath: null,
 				distPath: null,
 				srcFiles: null,
+				filesEmpty: false,
 			};
 		},
 
@@ -89,6 +88,18 @@
 
 		},
 
+		watch: {
+
+			srcPath: function (path) {
+				main.setSrcPath(path);
+			},
+
+			distPath: function (path) {
+				main.setDistPath(path);
+			},
+
+		},
+
 		methods: {
 
 			getPath(dist) {
@@ -104,10 +115,32 @@
 
 			},
 
-			getImages() {
+			getImages(filter) {
+
+				this.reset();
 
 				main.getImages(this.srcPath, files => {
-					this.srcFiles = files;
+					let tempFiles = files;
+
+					// 仅 PC 壁纸
+					if (filter === 'pc') {
+						this.srcFiles = tempFiles.find(file => Math.ceil(file.size / 1024) >= 600 && file.width > file.height);
+						if(!this.srcFiles){
+							this.filesEmpty = true;
+						}
+						return;
+					}
+
+					// 仅手机壁纸
+					if (filter === 'mobile') {
+						this.srcFiles = tempFiles.find(file => Math.ceil(file.size / 1024) >= 600 && file.width < file.height);
+						if(!this.srcFiles){
+							this.filesEmpty = true;
+						}
+						return;
+					}
+
+					this.srcFiles = tempFiles
 				}, error => {
 					console.error(error);
 				});
@@ -122,6 +155,20 @@
 				}
 				main.saveImage(file.srcPath, file.savePath);
 			},
+
+			reset(){
+				this.filesEmpty = false;
+				this.srcFiles = null;
+			}
+
+		},
+
+		mounted() {
+			// 读取缓存
+			this.srcPath = main.getSrcPath();
+			this.distPath = main.getDistPath();
+
+			// 'C:\\Users\\XuYuningPC\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets'
 
 		}
 
@@ -145,13 +192,32 @@
 
 	}
 
+	.tips {
+		font-size: 12px;
+		margin: @void;
+	}
+
+	.empty {
+		color: #ddd;
+		font-size: 24px;
+		font-weight: normal;
+		line-height: 32px;
+		padding: @voidLarge;
+		text-align: center;
+	}
+
 	.gallery {
+		max-width: 960px;
+		margin: 0 auto;
+		min-width: 480px;
+		padding: @voidLarge;
 
 		li {
 			background-color: #444;
 			border: 1px #222 solid;
 			display: inline-block;
 			height: 128px;
+			line-height: 100%;
 			padding: @void;
 			position: relative;
 			width: 128px;
@@ -162,6 +228,7 @@
 				overflow: hidden;
 				position: relative;
 				width: 100%;
+				vertical-align: bottom;
 				z-index: 1;
 			}
 
@@ -183,6 +250,13 @@
 					white-space: nowrap;
 				}
 
+			}
+
+			.checker-handler {
+				position: absolute;
+				left: @void;
+				top: @void;
+				z-index: 3;
 			}
 
 			.save {
