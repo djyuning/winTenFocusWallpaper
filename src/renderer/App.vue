@@ -127,6 +127,13 @@
 		padding: 0;
 	}
 
+	body {
+		font-family: "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+		-webkit-user-select: none;
+		-webkit-font-smoothing: subpixel-antialiased;
+		-webkit-transform: transition3d(0,0,0);
+	}
+
 	ul, ol, li {
 		list-style: none;
 	}
@@ -140,9 +147,9 @@
 		font-size: inherit;
 	}
 
-	body {
-		font-family: "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-		-webkit-user-select: none;
+	input, textarea {
+		-webkit-user-select: text;
+		user-select: text;
 	}
 
 	.padding {
@@ -169,7 +176,7 @@
 		}
 
 		// 头部
-		.header {
+		& > .header {
 			background-color: white;
 			border-bottom: 1px #eee solid;
 			position: relative;
@@ -197,7 +204,7 @@
 
 		}
 
-		.body {
+		& > .body {
 			bottom: 28px;
 			left: 0;
 			right: 0;
@@ -252,7 +259,7 @@
 
 		}
 
-		.footer {
+		& > .footer {
 			border-top: 1px #eee solid;
 			height: 28px;
 			font-size: 12px;
