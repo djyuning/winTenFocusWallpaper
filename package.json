@@ -1,6 +1,6 @@
 {
   "name": "win-ten-wallpaper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "XuYuzhong<djyuning@126.com>",
   "description": "Windows10 Focus Wallaper getter!",
   "license": "",
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "e-test",
-    "appId": "org.simulatedgreg.electron-vue",
+    "productName": "winTenWallpaper",
+    "appId": "com.tperiod",
     "directories": {
       "output": "build"
     },
