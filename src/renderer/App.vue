@@ -34,7 +34,7 @@
 		</div>
 		<div class="footer">
 
-			<span class="version">版本 0.0.1 Beta</span>
+			<span class="version">版本 {{version}} Beta</span>
 
 		</div>
 
@@ -67,6 +67,7 @@
 
 	import BScroll from 'better-scroll'
 	import main from '../lib/main'
+	import appInfo from '../../package'
 
 	export default {
 
@@ -77,6 +78,7 @@
 				scroll: null,
 				settingVisible: false,
 				darkMode: false,
+				version: appInfo.version,
 			};
 		},
 

@@ -62,7 +62,7 @@
 
 									<el-checkbox class="checker-handler" :label="key">&nbsp;</el-checkbox>
 
-									<el-button type="text" class="save" size="mini" @click="saveImage([key])" title="保存">保存</el-button>
+									<icon name="save" class="save" @click="saveImage([key])"></icon>
 
 								</div>
 
@@ -400,10 +400,22 @@
 				}
 
 				.save {
+					color: white;
+					cursor: pointer;
+					height: 16px;
+					padding: 8px;
 					position: absolute;
-					right: @void;
-					top: @void;
+					right: 0;
+					top: 0;
+					width: 16px;
 					z-index: 3;
+					transition: all .6s ease;
+
+					&:hover {
+						background-color: rgba(0,0,0,.3);
+						color: white;
+					}
+
 				}
 
 				&:hover {
