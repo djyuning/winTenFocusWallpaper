@@ -11,6 +11,11 @@ export default new Router({
 			component: require('@/view/main').default,
 		},
 		{
+			path: '/collection',
+			name: 'PageCollection',
+			component: require('@/view/collection').default,
+		},
+		{
 			path: '*',
 			redirect: '/'
 		},

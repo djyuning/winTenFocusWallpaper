@@ -1,11 +1,13 @@
 import fs from 'fs'
 import fse from 'fs-extra'
+import os from 'os'
 import path from 'path'
 import imageSize from 'image-size'
 import storge from 'storge-js'
 
 const PATH_SRC = 'path_src';
 const PATH_DIST = 'path_dist';
+const PATH_TEMP = path.join(os.tmpdir(), 'wtw');
 const THEME_DARK_MODE = 'theme_dark_mode';
 
 export default {
@@ -130,6 +132,29 @@ export default {
 	 */
 	isDarkMode: function () {
 		return storge.get(THEME_DARK_MODE, false);
+	},
+
+	/**
+	 * 添加到收藏
+	 * @param {Object} file
+	 */
+	addToCollection: function (file) {
+		this.saveImage(file.srcPath, path.join(PATH_TEMP, file.name + '.' + file.type));
+	},
+
+	/**
+	 * 获取收藏
+	 * @param {Function} success
+	 */
+	getCollections: function (success) {
+		fs.readdir(PATH_TEMP, (err, files) => {
+			if (err) throw err;
+
+			success(files.map(file => {
+				return path.join(PATH_TEMP, file);
+			}));
+
+		});
 	}
 
 };

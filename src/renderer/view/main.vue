@@ -29,18 +29,21 @@
 
 		</div>
 
-		<h4 class="empty" v-if="filesEmpty">暂无资源</h4>
+		<div class="complete" v-if="filesEmpty">
+			<h1>暂无资源</h1>
+			<p>没有合适的图片可以显示</p>
+		</div>
 
 		<div v-if="imageFiles && imageFiles.length > 0" class="gallery-wrap">
 
 			<div class="head">
 
 				<el-button-group v-if="!filesEmpty">
-					<el-button size="mini" @click="changeAll">全选</el-button>
-					<el-button size="mini" @click="changeReverse">反选</el-button>
+					<el-button size="mini" plain @click="changeAll">全选</el-button>
+					<el-button size="mini" plain @click="changeReverse">反选</el-button>
 					<template v-if="hasChange">
-						<el-button size="mini" @click="saveChanges">保存所选</el-button>
-						<el-button size="mini" @click="checkedFiles = []">取消选择</el-button>
+						<el-button size="mini" plain @click="saveChanges">保存所选</el-button>
+						<el-button size="mini" plain @click="checkedFiles = []">取消选择</el-button>
 					</template>
 				</el-button-group>
 
@@ -62,7 +65,13 @@
 
 									<el-checkbox class="checker-handler" :label="key">&nbsp;</el-checkbox>
 
-									<icon name="save" class="save" @click="saveImage([key])"></icon>
+									<button class="button save" @click="saveImage([key])">
+										<icon name="save"></icon>
+									</button>
+
+									<button class="button like" @click="addToCollection(key)">
+										<icon name="heart"></icon>
+									</button>
 
 								</div>
 
@@ -194,7 +203,7 @@
 					if (filter === 'mobile') {
 						this.imageFiles = [];
 						tempFiles.forEach(file => {
-							if (file.width >= 1920 && file.width < file.height) {
+							if (file.width >= 1080 && file.width < file.height) {
 								this.imageFiles.push(file);
 							}
 						});
@@ -241,10 +250,8 @@
 				// 获取全部文件
 				let saveFiles = [];
 
-				this.imageFiles.forEach((file, i) => {
-					if (index.find(checked => checked === i)) {
-						saveFiles.push(file);
-					}
+				index.forEach(key => {
+					saveFiles.push(this.imageFiles[key]);
 				});
 
 				saveFiles.forEach(file => {
@@ -256,14 +263,26 @@
 							type: 'warning'
 						}).then(() => {
 							main.saveImage(file.srcPath, file.savePath);
-							this.$message.success('保存成功');
+
+							this.$notify({
+								title: '保存成功',
+								message: file.savePath,
+								type: 'success'
+							});
+
 						});
 
 						return;
 					}
 
 					main.saveImage(file.srcPath, file.savePath);
-					this.$message.success('保存成功');
+
+					this.$notify({
+						title: '保存成功',
+						message: file.savePath,
+						type: 'success'
+					});
+
 				});
 
 			},
@@ -282,7 +301,11 @@
 				this.srcFiles = null;
 				this.imageFiles = null;
 				this.checkedFiles = [];
-			}
+			},
+
+			addToCollection(index) {
+				main.addToCollection(this.imageFiles[index]);
+			},
 
 		},
 
@@ -298,143 +321,6 @@
 	@import '../assets/less/mixins/mixins';
 	@import '../assets/less/mixins/const';
 
-	.checker {
-		margin: @voidLarge auto;
-		padding: @voidLarge;
-		position: relative;
-		max-width: 480px;
 
-		.row {
-			padding: @void;
-			position: relative;
-		}
-
-	}
-
-	.tips {
-		font-size: 12px;
-		margin: @void;
-	}
-
-	.empty {
-		color: #ddd;
-		font-size: 24px;
-		font-weight: normal;
-		line-height: 32px;
-		padding: @voidLarge;
-		text-align: center;
-	}
-
-	.gallery-wrap {
-		max-width: 960px;
-		margin: 0 auto;
-		min-width: 480px;
-		padding: @voidLarge;
-
-		& > .head, & > .body, & > .foot {
-			padding: @void;
-		}
-
-		.gallery li {
-			display: inline-block;
-			width: 20%;
-			vertical-align: top;
-
-			.item {
-				background-color: rgba(0, 0, 0, .5);
-				height: 0;
-				margin: @voidSmall;
-				overflow: hidden;
-				padding-bottom: 56%;
-				position: relative;
-
-				.inner {
-					font-size: 0;
-					height: 100%;
-					line-height: 560%;
-					position: absolute;
-					overflow: hidden;
-					text-align: center;
-					width: 100%;
-					vertical-align: middle;
-					z-index: 1;
-
-					img {
-						max-height: 100%;
-						vertical-align: middle;
-						transition: all .6s ease;
-					}
-				}
-
-				.name {
-					background-color: rgba(0, 0, 0, .8);
-					color: white;
-					font-size: 12px;
-					position: absolute;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					z-index: 3;
-
-					span {
-						display: block;
-						padding: @voidSmall @void;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-					}
-
-				}
-
-				.checker-handler {
-					position: absolute;
-					left: @void;
-					top: @void;
-					z-index: 3;
-				}
-
-				.checker-handler:not(.is-checked) {
-					opacity: 0;
-					transition: all .6s ease;
-					transform: scale(.5);
-				}
-
-				.save {
-					color: white;
-					cursor: pointer;
-					height: 16px;
-					padding: 8px;
-					position: absolute;
-					right: 0;
-					top: 0;
-					width: 16px;
-					z-index: 3;
-					transition: all .6s ease;
-
-					&:hover {
-						background-color: rgba(0,0,0,.3);
-						color: white;
-					}
-
-				}
-
-				&:hover {
-
-					img {
-						transform: scale(1.2);
-					}
-
-					.checker-handler {
-						opacity: 1;
-						transform: scale(1);
-					}
-
-				}
-
-			}
-
-		}
-
-	}
 
 </style>

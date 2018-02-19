@@ -17,10 +17,14 @@ function createWindow() {
 
 	// 初始化窗口
 	mainWindow = new BrowserWindow({
+		backgroundColor: '#00FFFFFF',
+		center: true,
+		hasShadow: true,
 		height: 640,
 		//frame: false,
-		useContentSize: true,
 		//transparent: true,
+		minHeight: 640,
+		minWidth: 960,
 		width: 960,
 		webPreferences: {
 			webSecurity: false, // 加上这个就可以获取到了本地的图片
