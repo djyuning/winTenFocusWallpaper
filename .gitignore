@@ -9,4 +9,5 @@ npm-debug.log.*
 thumbs.db
 !.gitkeep
 .idea
-.lock
+*.idea
+*.lock
