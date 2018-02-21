@@ -143,6 +143,37 @@ export default {
 	},
 
 	/**
+	 * 删除单个文件
+	 * @param file
+	 */
+	removeFromCollection: function (file) {
+		return fse.remove(file);
+	},
+
+	/**
+	 * 删除收藏的文件
+	 * @param files
+	 * @param callback
+	 * @return {Promise<[]>}
+	 */
+	removeCollections: function (files, callback) {
+		let removed = [];
+
+		files.forEach(file => {
+			removed.push(callback(file));
+		});
+
+		return Promise.all(removed);
+	},
+
+	/**
+	 * 清空收藏的文件
+	 */
+	clearCollections: function () {
+		fse.empty(PATH_TEMP);
+	},
+
+	/**
 	 * 获取收藏
 	 * @param {Function} success
 	 */

@@ -21,7 +21,7 @@
 				<el-button @click="getImages">获取全部</el-button>
 				<el-button @click="getImages('pc')">电脑</el-button>
 				<el-button @click="getImages('mobile')">手机</el-button>
-				<el-button type="danger" @click="reset">清空</el-button>
+				<el-button v-if="imageFiles" type="danger" @click="reset">取消</el-button>
 			</div>
 
 			<p class="tips">Windows 10 的聚焦壁纸一般存放在用户目录 \Packages\Microsoft.Windows.ContentDeliveryManager_***\LocalState\Assets
@@ -47,6 +47,13 @@
 					</template>
 				</el-button-group>
 
+				<el-button-group v-if="!filesEmpty" style="float: right">
+					<el-button size="mini" plain>全部</el-button>
+					<el-button size="mini" plain>电脑</el-button>
+					<el-button size="mini" plain>手机</el-button>
+				</el-button-group>
+
+				<div class="clear"></div>
 			</div>
 
 			<div class="body">
@@ -316,11 +323,3 @@
 
 	}
 </script>
-
-<style lang="less" scoped>
-	@import '../assets/less/mixins/mixins';
-	@import '../assets/less/mixins/const';
-
-
-
-</style>

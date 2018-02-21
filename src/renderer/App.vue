@@ -4,10 +4,10 @@
 
 			<h1 class="title">Window 10 <span>FocusWallpaper</span></h1>
 
-			<el-button class="theme-dark-toggle" size="mini" @click="darkMode = !darkMode">{{darkMode? '亮色': '暗色'}}
+			<el-button type="success" class="theme-dark-toggle" size="mini" @click="darkMode = !darkMode">
+				{{darkMode? '亮色': '暗色'}}
 			</el-button>
 
-			<div class="draggable"></div>
 		</div>
 		<div class="body">
 			<div class="sidebar">
@@ -24,6 +24,10 @@
 					</li>
 				</ul>
 
+				<button class="exit" @click="exitApp">
+					<icon name="power-off"></icon>
+				</button>
+
 			</div>
 			<div class="wrapper">
 				<router-view></router-view>
@@ -37,16 +41,7 @@
 
 		<el-dialog title="设置" :visible.sync="settingVisible">
 			<div class="app-setting-wrap">
-				<el-form ref="form" label-width="128px">
-
-					<el-form-item label="默认读取">
-						<el-radio-group>
-							<el-radio :label="0">全部</el-radio>
-							<el-radio :label="1">电脑和手机壁纸</el-radio>
-							<el-radio :label="2">电脑壁纸</el-radio>
-							<el-radio :label="3">手机壁纸</el-radio>
-						</el-radio-group>
-					</el-form-item>
+				<el-form ref="form" label-width="80px">
 
 					<el-form-item label="记住选择">
 						<el-switch></el-switch>

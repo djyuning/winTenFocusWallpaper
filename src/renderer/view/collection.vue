@@ -9,13 +9,15 @@
 						<div class="inner">
 							<img :src="'file:///'+ collection" alt=""/>
 
-							<button class="button remove">
+							<button class="button remove" @click="removeCollectionItem(collection)">
 								<icon name="times"></icon>
 							</button>
 
+							<!--
 							<button class="button share">
 								<icon name="share-alt"></icon>
 							</button>
+							-->
 
 						</div>
 					</div>
@@ -46,6 +48,18 @@
 			'$route': function () {
 				main.getCollections(files => {
 					this.collections = files;
+				});
+			}
+
+		},
+
+		methods: {
+
+			removeCollectionItem(file) {
+				main.removeCollections([file], main.removeFromCollection).then(() => {
+					main.getCollections(files => {
+						this.collections = files;
+					});
 				});
 			}
 

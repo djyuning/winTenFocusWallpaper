@@ -1,0 +1,208 @@
+#app {
+	background-color: white;
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+
+	::-webkit-scrollbar {
+		background-color: transparent;
+		height: 6px;
+		width: 6px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: transparent;
+		box-shadow: inset 0 0 0 2px white, inset 0 0 0 4px #666;
+	}
+
+	// 主题切换按钮
+	.theme-dark-toggle {
+		position: absolute;
+		right: @voidLarge;
+		top: 50%;
+		margin-top: -14px;
+		z-index: 3;
+	}
+
+	// 头部
+	& > .header {
+		background-color: white;
+		border-bottom: 1px #eee solid;
+		position: relative;
+		z-index: 2;
+
+		// LOGO
+		.title {
+			cursor: default;
+			display: inline-block;
+			font-family: "Microsoft YaHei", sans-serif;
+			font-size: 24px;
+			font-weight: lighter;
+			line-height: 48px;
+			margin: @void;
+			padding: @void;
+			position: relative;
+			text-align: left;
+			z-index: 2;
+			-webkit-app-region: drag;
+
+			span {
+				color: @colorPrimary;
+				display: inline-block;
+				font-weight: normal;
+				vertical-align: top;
+			}
+
+		}
+
+	}
+
+	& > .body {
+		bottom: 28px;
+		left: 0;
+		right: 0;
+		position: absolute;
+		top: 89px;
+		z-index: 1;
+	}
+
+	.sidebar {
+		background-color: white;
+		border-right: 1px #eee solid;
+		bottom: 0;
+		left: 0;
+		top: 0;
+		position: absolute;
+		width: 64px;
+		z-index: 2;
+
+		// 菜单
+		.menu {
+			position: relative;
+
+			button, a {
+				background-color: transparent;
+				border: none;
+				border-radius: @radiusSmall;
+				color: inherit;
+				cursor: pointer;
+				display: block;
+				font-size: 18px;
+				height: 48px;
+				line-height: 48px;
+				margin: 8px;
+				outline: none;
+				text-align: center;
+				width: 48px;
+			}
+
+			.router-link-exact-active a, a:hover {
+				background-color: @colorPrimary;
+				color: white;
+			}
+
+		}
+
+		// 退出按钮
+		.exit {
+			background-color: transparent;
+			border: none;
+			bottom: @void;
+			color: #cc5157;
+			cursor: pointer;
+			height: 44px;
+			position: absolute;
+			left: 50%;
+			margin-left: -22px;
+			width: 44px;
+		}
+
+	}
+
+	.wrapper {
+		background-color: #fafafa;
+		bottom: 0;
+		left: 64px;
+		right: 0;
+		top: 0;
+		overflow: auto;
+		position: absolute;
+		z-index: 1;
+
+	}
+
+	& > .footer {
+		background-color: white;
+		border-top: 1px #eee solid;
+		height: 28px;
+		font-size: 12px;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		position: absolute;
+		z-index: 3;
+
+		.version {
+			color: #999;
+			display: inline-block;
+			padding: 0 @void;
+			position: absolute;
+			right: 0;
+			top: 0;
+			font-size: 12px;
+			line-height: 28px;
+		}
+
+	}
+
+	// 完成
+	.complete {
+		margin: 0 auto;
+		padding: 128px;
+		position: relative;
+		text-align: center;
+
+		h1 {
+			font-size: 24px;
+			font-weight: normal;
+			line-height: 28px;
+			margin: @void;
+		}
+
+		p {
+			color: #999;
+			font-size: 14px;
+			line-height: 28px;
+		}
+
+	}
+
+	// 暗色主题
+	&.dark {
+		background-color: #222;
+
+		.header, .sidebar, .footer {
+			border-color: #444;
+			background-color: #222;
+		}
+
+		.wrapper {
+			background-color: #111;
+		}
+
+		.title {
+			color: white;
+		}
+
+		::-webkit-scrollbar-thumb {
+			box-shadow: inset 0 0 0 2px #333, inset 0 0 0 4px rgba(255,255,255,.3);
+		}
+
+	}
+
+}

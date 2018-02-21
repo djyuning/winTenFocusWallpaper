@@ -1,0 +1,130 @@
+.gallery-wrap {
+	margin: 0 auto;
+	min-width: 480px;
+	padding: @voidLarge;
+
+	& > .head, & > .body, & > .foot {
+		padding: @void;
+	}
+
+	.gallery li {
+		display: inline-block;
+		width: 25%;
+		vertical-align: top;
+	}
+
+	.gallery .item {
+		background-color: #333;
+		font-size: 0;
+		height: 0;
+		margin: @voidSmall;
+		overflow: hidden;
+		padding-bottom: percentage(1060/1920);
+		position: relative;
+
+		.inner {
+			height: 100%;
+			position: absolute;
+			overflow: hidden;
+			text-align: center;
+			width: 100%;
+			vertical-align: middle;
+			z-index: 1;
+
+			img {
+				max-height: 100%;
+				vertical-align: middle;
+				transition: all .6s ease;
+			}
+
+		}
+
+		.name {
+			background-color: rgba(0, 0, 0, .8);
+			color: white;
+			font-size: 12px;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 3;
+
+			span {
+				display: block;
+				padding: @voidSmall @void;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+		}
+
+		.checker-handler {
+			position: absolute;
+			left: @void;
+			top: @void;
+			z-index: 3;
+		}
+
+		.checker-handler:not(.is-checked) {
+			opacity: 0;
+			transition: all .6s ease;
+			transform: scale(.5);
+		}
+
+		.button {
+			background-color: transparent;
+			border: none;
+			box-sizing: content-box;
+			color: white;
+			cursor: pointer;
+			height: 16px;
+			padding: 8px;
+			position: absolute;
+			width: 16px;
+			z-index: 3;
+			transition: all .6s ease;
+		}
+
+		.save {
+			right: 0;
+			top: 0;
+
+			&:hover {
+				background-color: rgba(0, 0, 0, .3);
+				color: white;
+			}
+
+		}
+
+		.like {
+			right: 0;
+			bottom: 0;
+		}
+
+		.remove {
+			right: 0;
+			top: 0;
+		}
+
+		.share {
+			left: 0;
+			top: 0;
+		}
+
+		&:hover {
+
+			img {
+				transform: scale(1.2);
+			}
+
+			.checker-handler {
+				opacity: 1;
+				transform: scale(1);
+			}
+
+		}
+
+	}
+
+}
