@@ -35,7 +35,7 @@
 		</div>
 		<div class="footer">
 
-			<span class="version">版本 {{version}} Beta</span>
+			<span class="version">版本 {{version}}</span>
 
 		</div>
 
